@@ -50,7 +50,8 @@ if [ "$ID" == "centos" ]; then
     # Build openssl if needed
     openssl_tag="OpenSSL_${openssl_version//./_}"
     openssl_dir="openssl-${openssl_tag}"
-    if [ ! -d "${openssl_dir}" ]; then curl -sL \
+    if [ ! -d "${openssl_dir}" ]; then
+        curl -fsSL \
             https://github.com/openssl/openssl/archive/${openssl_tag}.tar.gz \
             | tar xzf -
 
@@ -80,7 +81,7 @@ if [ "$ID" == "centos" ]; then
     sasl_tag="cyrus-sasl-${sasl_version}"
     sasl_dir="cyrus-sasl-${sasl_tag}"
     if [ ! -d "${sasl_dir}" ]; then
-        curl -sL \
+        curl -fsSL \
             https://github.com/cyrusimap/cyrus-sasl/archive/${sasl_tag}.tar.gz \
             | tar xzf -
 
@@ -109,7 +110,7 @@ if [ "$ID" == "centos" ]; then
     ldap_tag="${ldap_version}"
     ldap_dir="openldap-${ldap_tag}"
     if [ ! -d "${ldap_dir}" ]; then
-        curl -sL \
+        curl -fsSL \
             https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${ldap_tag}.tgz \
             | tar xzf -
 
@@ -140,7 +141,7 @@ fi
 postgres_tag="REL_${postgres_version//./_}"
 postgres_dir="postgres-${postgres_tag}"
 if [ ! -d "${postgres_dir}" ]; then
-    curl -sL \
+    curl -fsSL \
         https://github.com/postgres/postgres/archive/${postgres_tag}.tar.gz \
         | tar xzf -
 
