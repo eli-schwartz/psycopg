@@ -12,8 +12,10 @@ jobs:
     if: true
 
     env:
+      # Latest release: https://www.postgresql.org/ftp/source/
       LIBPQ_VERSION: "16.3"
-      OPENSSL_VERSION: "1.1.1w"
+      # Latest release: https://www.openssl.org/source/
+      OPENSSL_VERSION: "3.3.1"
 
     strategy:
       fail-fast: false
