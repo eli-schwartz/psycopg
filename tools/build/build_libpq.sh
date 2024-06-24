@@ -49,19 +49,19 @@ if [ "$ID" == "centos" ]; then
             https://github.com/openssl/openssl/archive/${openssl_tag}.tar.gz \
             | tar xzf -
 
-        cd "${openssl_dir}"
+        pushd "${openssl_dir}"
 
         ./config --prefix=${LIBPQ_BUILD_PREFIX} --openssldir=${LIBPQ_BUILD_PREFIX} \
             zlib -fPIC shared
         make depend
         make
     else
-        cd "${openssl_dir}"
+        pushd "${openssl_dir}"
     fi
 
     # Install openssl
     make install_sw
-    cd ..
+    popd
 
 fi
 
@@ -79,21 +79,21 @@ if [ "$ID" == "centos" ]; then
             https://github.com/cyrusimap/cyrus-sasl/archive/${sasl_tag}.tar.gz \
             | tar xzf -
 
-        cd "${sasl_dir}"
+        pushd "${sasl_dir}"
 
         autoreconf -i
         ./configure --prefix=${LIBPQ_BUILD_PREFIX} \
             CPPFLAGS=-I${LIBPQ_BUILD_PREFIX}/include/ LDFLAGS=-L${LIBPQ_BUILD_PREFIX}/lib
         make
     else
-        cd "${sasl_dir}"
+        pushd "${sasl_dir}"
     fi
 
     # Install libsasl2
     # requires missing nroff to build
     touch saslauthd/saslauthd.8
     make install
-    cd ..
+    popd
 
 fi
 
@@ -108,7 +108,7 @@ if [ "$ID" == "centos" ]; then
             https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${ldap_tag}.tgz \
             | tar xzf -
 
-        cd "${ldap_dir}"
+        pushd "${ldap_dir}"
 
         ./configure --prefix=${LIBPQ_BUILD_PREFIX} --enable-backends=no --enable-null \
             CPPFLAGS=-I${LIBPQ_BUILD_PREFIX}/include/ LDFLAGS=-L${LIBPQ_BUILD_PREFIX}/lib
@@ -118,7 +118,7 @@ if [ "$ID" == "centos" ]; then
         make -C libraries/liblber/
         make -C libraries/libldap/
     else
-        cd "${ldap_dir}"
+        pushd "${ldap_dir}"
     fi
 
     # Install openldap
@@ -126,7 +126,7 @@ if [ "$ID" == "centos" ]; then
     make -C libraries/libldap/ install
     make -C include/ install
     chmod +x ${LIBPQ_BUILD_PREFIX}/lib/{libldap,liblber}*.so*
-    cd ..
+    popd
 
 fi
 
@@ -139,7 +139,7 @@ if [ ! -d "${postgres_dir}" ]; then
         https://github.com/postgres/postgres/archive/${postgres_tag}.tar.gz \
         | tar xzf -
 
-    cd "${postgres_dir}"
+    pushd "${postgres_dir}"
 
     # Match the default unix socket dir default with what defined on Ubuntu and
     # Red Hat, which seems the most common location
@@ -158,13 +158,13 @@ if [ ! -d "${postgres_dir}" ]; then
     make -C src/bin/pg_config
     make -C src/include
 else
-    cd "${postgres_dir}"
+    pushd "${postgres_dir}"
 fi
 
 # Install libpq
 make -C src/interfaces/libpq install
 make -C src/bin/pg_config install
 make -C src/include install
-cd ..
+popd
 
 find ${LIBPQ_BUILD_PREFIX} -name \*.so.\* -type f -exec strip --strip-unneeded {} \;
