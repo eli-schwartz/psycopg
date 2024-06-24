@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/libpq.build
-          key: libpq-${{ matrix.platform }}-${{ matrix.arch }}-${{ env.LIBPQ_VERSION }}-${{ env.OPENSSL_VERSION }}
+          key: libpq-${{ matrix.platform }}-${{ matrix.arch }}-${{ env.LIBPQ_VERSION }}-${{ env.OPENSSL_VERSION }}-2
 
       - name: Create the binary package source tree
         run: python3 ./tools/build/copy_to_binary.py
