@@ -147,13 +147,13 @@ if [ ! -d "${postgres_dir}" ]; then
 '|#define DEFAULT_PGSOCKET_DIR "/var/run/postgresql"|' \
         src/include/pg_config_manual.h
 
-    # Often needed, but currently set by the workflow
-    # export LD_LIBRARY_PATH="${LIBPQ_BUILD_PREFIX}/lib"
+    export LD_LIBRARY_PATH="${LIBPQ_BUILD_PREFIX}/lib:${LIBPQ_BUILD_PREFIX}/lib64"
 
     ./configure --prefix=${LIBPQ_BUILD_PREFIX} --sysconfdir=/etc/postgresql-common \
         --without-readline --without-icu \
         --with-gssapi --with-openssl --with-pam --with-ldap \
-        CPPFLAGS=-I${LIBPQ_BUILD_PREFIX}/include/ LDFLAGS=-L${LIBPQ_BUILD_PREFIX}/lib
+        CPPFLAGS=-I${LIBPQ_BUILD_PREFIX}/include/ \
+        LDFLAGS="-L${LIBPQ_BUILD_PREFIX}/lib -L${LIBPQ_BUILD_PREFIX}/lib64"
     make -C src/interfaces/libpq
     make -C src/bin/pg_config
     make -C src/include
