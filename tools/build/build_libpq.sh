@@ -40,6 +40,7 @@ case "$ID" in
 esac
 
 if [ "$ID" == "centos" ]; then
+  if [[ ! -f "${LIBPQ_BUILD_PREFIX}/openssl.cnf" ]]; then
 
     # Build openssl if needed
     openssl_tag="openssl-${openssl_version}"
@@ -63,10 +64,12 @@ if [ "$ID" == "centos" ]; then
     make install_sw
     popd
 
+  fi
 fi
 
 
 if [ "$ID" == "centos" ]; then
+  if [[ ! -f "${LIBPQ_BUILD_PREFIX}/lib/libsasl2.so" ]]; then
 
     # Build libsasl2 if needed
     # The system package (cyrus-sasl-devel) causes an amazing error on i686:
@@ -95,10 +98,12 @@ if [ "$ID" == "centos" ]; then
     make install
     popd
 
+  fi
 fi
 
 
 if [ "$ID" == "centos" ]; then
+  if [[ ! -f "${LIBPQ_BUILD_PREFIX}/lib/libldap.so" ]]; then
 
     # Build openldap if needed
     ldap_tag="${ldap_version}"
@@ -128,6 +133,7 @@ if [ "$ID" == "centos" ]; then
     chmod +x ${LIBPQ_BUILD_PREFIX}/lib/{libldap,liblber}*.so*
     popd
 
+  fi
 fi
 
 
